@@ -1,12 +1,14 @@
 package com.jeiss.todo.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jeiss.todo.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -27,4 +29,18 @@ public class UserDto {
 
     @JsonIgnore
     private List<CategoryDto> category;
+
+    public static User toEntity(UserDto userDto){
+        final User user = new User();
+        user.setId(userDto.getId());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setEmail(userDto.getEmail());
+        user.setUserName(userDto.getUserName());
+        user.setPassword(userDto.getPassword());
+        user.setCategory(
+                userDto.getCategory() != null ? userDto.getCategory().stream().map(CategoryDto::toEntity).collect(Collectors.toList()): null
+                );
+        return user;
+    }
 }
