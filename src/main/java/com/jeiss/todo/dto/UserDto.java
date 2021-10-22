@@ -43,4 +43,19 @@ public class UserDto {
                 );
         return user;
     }
+
+    public static UserDto fromEntity(User user){
+        UserDto userDto = UserDto.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .userName(user.getUserName())
+                .password(user.getPassword())
+                .category(
+                        user.getCategory() != null ? user.getCategory().stream().map(CategoryDto::fromEntity).collect(Collectors.toList()): null
+                )
+                .build();
+        return userDto;
+    }
 }

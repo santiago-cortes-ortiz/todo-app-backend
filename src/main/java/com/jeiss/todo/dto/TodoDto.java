@@ -1,5 +1,6 @@
 package com.jeiss.todo.dto;
 
+import com.jeiss.todo.model.Todo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,4 +27,27 @@ public class TodoDto {
 
     private CategoryDto category;
 
+    public static Todo toEntity(TodoDto todoDto) {
+        final Todo todo = new Todo();
+        todo.setId(todoDto.getId());
+        todo.setTitle(todoDto.getTitle());
+        todo.setDescription(todoDto.getDescription());
+        todo.setDone(todoDto.isDone());
+        todo.setFavorite(todoDto.isFavorite());
+        todo.setStartDate(ZonedDateTime.now());
+        todo.setCategory(CategoryDto.toEntity(todoDto.getCategory()));
+
+        return todo;
+    }
+
+    public static TodoDto fromEntity(Todo todo) {
+        return TodoDto.builder()
+                .id(todo.getId())
+                .title(todo.getTitle())
+                .description(todo.getDescription())
+                .startDate(todo.getStartDate())
+                .done(todo.isDone())
+                .favorite(todo.isFavorite())
+                .build();
+    }
 }
